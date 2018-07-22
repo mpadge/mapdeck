@@ -154,26 +154,30 @@
 #
 # shinyApp(ui, server)
 
+## Hexagon
 
-### Polygon
-
-## polygons need to be an array of polylines
-
-# sf <- geojsonsf::geojson_sf( googleway::geo_melbourne )
-# enc <- googlePolylines::encode(sf)
+# access_token <- "pk.eyJ1Ijoic3ltYm9saXgiLCJhIjoiY2pqbm45Zmo1MGl1aTNxbmxwamFqb3Z6MSJ9.yIkj0tGNNh4u61DliOXV6g"
+#
+# head(roads)
+# library(data.table)
+#
+# df <- googlePolylines::decode(roads$geometry)
+#
+# dt <- data.table::rbindlist(df)
 #
 # mapdeck(
-#   token = key
-#   , style = 'mapbox://styles/mapbox/dark-v9'
-#   , location = c(145.688269, -38.101062)
-#   , zoom = 8
-#   ) %>%
-#   add_polygon(
-#   	data = enc
-#     , polyline = "geometry"
-#     , layer = "polygon_layer"
-#   	, fill_colour = "fillColor"
-#   	)
+# 		token = access_token
+# 		, style = "mapbox://styles/mapbox/dark-v9"
+# 		, pitch = 35
+# 	) %>%
+# 	add_hexagon(
+# 		data = dt
+# 		, lon = "lon"
+# 		, lat = "lat"
+# 	)
+
+
+
 
 
 

@@ -21,6 +21,7 @@ mapdeckScatterplotDependency <- function() {
 #' @param radius in metres
 #'
 #' @examples
+#' \dontrun{
 #'
 #' key <- "pk.eyJ1Ijoic3ltYm9saXgiLCJhIjoiY2pqbm45Zmo1MGl1aTNxbmxwamFqb3Z6MSJ9.yIkj0tGNNh4u61DliOXV6g"
 #'
@@ -32,6 +33,7 @@ mapdeckScatterplotDependency <- function() {
 #'   , radius = 100000
 #'   , fill_colour = "country"
 #' )
+#' }
 #'
 #' @export
 add_scatterplot <- function(

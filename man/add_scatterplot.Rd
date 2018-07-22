@@ -34,6 +34,7 @@ The Scatterplot Layer takes in coordinate points and renders them as circles
 with a certain radius.
 }
 \examples{
+\dontrun{
 
 key <- "pk.eyJ1Ijoic3ltYm9saXgiLCJhIjoiY2pqbm45Zmo1MGl1aTNxbmxwamFqb3Z6MSJ9.yIkj0tGNNh4u61DliOXV6g"
 
@@ -45,5 +46,6 @@ add_scatterplot(
   , radius = 100000
   , fill_colour = "country"
 )
+}
 
 }
