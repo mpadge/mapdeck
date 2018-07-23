@@ -4,7 +4,7 @@
 \alias{add_scatterplot}
 \title{Add Scatterplot}
 \usage{
-add_scatterplot(map, data = get_map_data(map), lon, lat, radius = NULL,
+add_scatterplot(map, data = get_map_data(map), lng, lat, radius = NULL,
   fill_colour = NULL, fill_opacity = NULL, stroke_width = NULL,
   layer_id = NULL, digits = 6, palette = viridisLite::viridis)
 }
@@ -12,8 +12,6 @@ add_scatterplot(map, data = get_map_data(map), lon, lat, radius = NULL,
 \item{map}{a mapdeck map object}
 
 \item{data}{data to be used in the layer}
-
-\item{lon}{column containing longitude values}
 
 \item{lat}{column containing latitude values}
 
@@ -28,6 +26,8 @@ distinguish between shape layers of the same type}
 should be used for the latitude / longitude coordinates.}
 
 \item{palette}{a function, or list of functions which generates hex colours}
+
+\item{lon}{column containing longitude values}
 }
 \description{
 The Scatterplot Layer takes in coordinate points and renders them as circles

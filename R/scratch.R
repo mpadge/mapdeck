@@ -177,7 +177,28 @@
 # 	)
 
 
+# df <- read.csv('https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/3d-heatmap/heatmap-data.csv')
+#
+# head(df)
+#
 
+# mapdeck(
+# 	token = access_token
+# 	, style = "mapbox://styles/mapbox/dark-v9"
+# 	, pitch = 35
+# ) %>%
+# 	add_hexagon(
+# 		data = df
+# 		, lng = "lng"
+# 		, lat = "lat"
+# 		, layer_id = "hex"
+# 	) %>%
+# 	add_scatterplot(
+# 		data = df
+# 		, lng = "lng"
+# 		, lat = "lat"
+# 		, layer_id = "hex"
+# 	)
 
 
 

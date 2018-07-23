@@ -11,7 +11,7 @@ function add_scatterplot( map_id, json, layer_id ) {
     radiusScale: 1,
     radiusMinPixels: 1,
     getRadius: d => d.radius,
-    getPosition: d => [d.lon, d.lat, d.elevation],
+    getPosition: d => [d.lng, d.lat],
     //getColor: d => [d.fill_colour_red, d.fill_colour_green, d.fill_colour_blue]
     getColor: d => hexToRgb( d.fill_colour ),
     onClick: info => layer_click( map_id, "scatterplot", info )

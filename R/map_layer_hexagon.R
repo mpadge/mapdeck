@@ -28,7 +28,7 @@ mapdeckHexagonDependency <- function() {
 add_hexagon <- function(
 	map,
 	data = get_map_data(map),
-	lon,
+	lng,
 	lat,
 	layer_id,
 	radius = NULL,

@@ -4,25 +4,25 @@
 \alias{add_hexagon}
 \title{Add hexagon}
 \usage{
-add_hexagon(map, data = get_map_data(map), lon, lat, radius = NULL,
-  layer_id = NULL, digits = 6)
+add_hexagon(map, data = get_map_data(map), lng, lat, layer_id,
+  radius = NULL, digits = 6)
 }
 \arguments{
 \item{map}{a mapdeck map object}
 
 \item{data}{data to be used in the layer}
 
-\item{lon}{column containing longitude values}
-
 \item{lat}{column containing latitude values}
-
-\item{radius}{in metres}
 
 \item{layer_id}{single value specifying an id for the layer. Use this value to
 distinguish between shape layers of the same type}
 
+\item{radius}{in metres}
+
 \item{digits}{integer. Use this parameter to specify how many digits (decimal places)
 should be used for the latitude / longitude coordinates.}
+
+\item{lon}{column containing longitude values}
 
 \item{colour_range}{palette of colours}
 }

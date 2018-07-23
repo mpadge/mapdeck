@@ -39,7 +39,7 @@ mapdeckScatterplotDependency <- function() {
 add_scatterplot <- function(
 	map,
 	data = get_map_data(map),
-	lon,
+	lng,
 	lat,
 	radius = NULL,
 	fill_colour = NULL,
