@@ -172,8 +172,9 @@
 # 	) %>%
 # 	add_hexagon(
 # 		data = dt
-# 		, lon = "lon"
+# 		, lng = "lon"
 # 		, lat = "lat"
+# 		, layer_id = "hex"
 # 	)
 
 
