@@ -5,8 +5,8 @@
 \title{Add Scatterplot}
 \usage{
 add_scatterplot(map, data = get_map_data(map), lng, lat, radius = NULL,
-  fill_colour = NULL, fill_opacity = NULL, stroke_width = NULL,
-  layer_id = NULL, digits = 6, palette = viridisLite::viridis)
+  fill_colour = NULL, fill_opacity = NULL, stroke_width = NULL, layer_id,
+  digits = 6, palette = viridisLite::viridis)
 }
 \arguments{
 \item{map}{a mapdeck map object}
@@ -45,7 +45,19 @@ add_scatterplot(
   , lon = "lon"
   , radius = 100000
   , fill_colour = "country"
+  , layer_id = "scatter_layer"
 )
 }
+
+df <- read.csv('https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/3d-heatmap/heatmap-data.csv')
+
+mapdeck( token = key, style = 'mapbox://styles/mapbox/dark-v9', pitch = 45 ) \%>\%
+add_scatterplot(
+  data = df
+  , lat = "lat"
+  , lon = "lng"
+  , layer_id = "scatter_layer"
+)
+
 
 }

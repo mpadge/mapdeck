@@ -32,8 +32,20 @@ mapdeckScatterplotDependency <- function() {
 #'   , lon = "lon"
 #'   , radius = 100000
 #'   , fill_colour = "country"
+#'   , layer_id = "scatter_layer"
 #' )
 #' }
+#'
+#' df <- read.csv('https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/3d-heatmap/heatmap-data.csv')
+#'
+#' mapdeck( token = key, style = 'mapbox://styles/mapbox/dark-v9', pitch = 45 ) %>%
+#' add_scatterplot(
+#'   data = df
+#'   , lat = "lat"
+#'   , lon = "lng"
+#'   , layer_id = "scatter_layer"
+#' )
+#'
 #'
 #' @export
 add_scatterplot <- function(
@@ -45,7 +57,7 @@ add_scatterplot <- function(
 	fill_colour = NULL,
 	fill_opacity = NULL,
 	stroke_width = NULL,
-	layer_id = NULL,
+	layer_id,
 	digits = 6,
 	palette = viridisLite::viridis
 	) {
