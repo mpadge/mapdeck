@@ -182,20 +182,20 @@
 #
 # head(df)
 #
-
+#
 # mapdeck(
 # 	token = access_token
 # 	, style = "mapbox://styles/mapbox/dark-v9"
 # 	, pitch = 35
 # ) %>%
 # 	add_hexagon(
-# 		data = df
+# 		data = df[1:1000, ]
 # 		, lng = "lng"
 # 		, lat = "lat"
 # 		, layer_id = "hex"
 # 	) %>%
 # 	add_scatterplot(
-# 		data = df
+# 		data = df[1:1000, ]
 # 		, lng = "lng"
 # 		, lat = "lat"
 # 		, layer_id = "hex"
