@@ -1,6 +1,7 @@
 
 function add_scatterplot( map_id, json, layer_id ) {
 
+  console.log("scatter data");
   console.log( json );
 
   // reference: https://github.com/uber/deck.gl/blob/master/docs/layers/scatterplot-layer.md

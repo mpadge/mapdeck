@@ -158,31 +158,10 @@
 
 # access_token <- "pk.eyJ1Ijoic3ltYm9saXgiLCJhIjoiY2pqbm45Zmo1MGl1aTNxbmxwamFqb3Z6MSJ9.yIkj0tGNNh4u61DliOXV6g"
 #
-# head(roads)
-# library(data.table)
-#
-# df <- googlePolylines::decode(roads$geometry)
-#
-# dt <- data.table::rbindlist(df)
-#
-# mapdeck(
-# 		token = access_token
-# 		, style = "mapbox://styles/mapbox/dark-v9"
-# 		, pitch = 35
-# 	) %>%
-# 	add_hexagon(
-# 		data = dt
-# 		, lng = "lon"
-# 		, lat = "lat"
-# 		, layer_id = "hex"
-# 	)
-
-
 # df <- read.csv('https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/3d-heatmap/heatmap-data.csv')
-#
+# df <- df[!is.na(df$lat), ]
 # head(df)
 #
-
 # mapdeck(
 # 	token = access_token
 # 	, style = "mapbox://styles/mapbox/dark-v9"
@@ -200,6 +179,32 @@
 # 		, lat = "lat"
 # 		, layer_id = "hex"
 # 	)
+
+
+### SF
+
+# library(sf)
+#
+# sf <- sf::st_read("http://eric.clst.org/assets/wiki/uploads/Stuff/gz_2010_us_050_00_500k.json")
+# access_token <- "pk.eyJ1Ijoic3ltYm9saXgiLCJhIjoiY2pqbm45Zmo1MGl1aTNxbmxwamFqb3Z6MSJ9.yIkj0tGNNh4u61DliOXV6g"
+#
+# mapdeck(
+#   token = access_token
+#   , style = 'mapbox://styles/mapbox/dark-v9'
+#   ) %>%
+#   add_polygon(
+#   	data = sf[!sf$STATE %in% c("02","15","72"), ]
+#     , layer = "polygon_layer"
+#   	, fill_colour = "CENSUSAREA"
+#   	)
+
+#
+# enc <- googlePolylines::encode(sf, strip = T)
+# str(enc)
+#
+# enc[['geometry']] <- unlist(enc[['geometry']])
+
+
 
 
 
