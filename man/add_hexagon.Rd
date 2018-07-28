@@ -32,5 +32,10 @@ It takes the radius of hexagon bin, projects points into hexagon bins.
 The color and height of the hexagon is scaled by number of points it contains.
 }
 \examples{
+\dontrun{
+
+
+
+}
 
 }

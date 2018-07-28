@@ -23,6 +23,11 @@ mapdeckHexagonDependency <- function() {
 #' @param colour_range palette of colours
 #'
 #' @examples
+#' \dontrun{
+#'
+#'
+#'
+#' }
 #'
 #' @export
 add_hexagon <- function(

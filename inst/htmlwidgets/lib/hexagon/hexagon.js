@@ -1,6 +1,9 @@
 
 function add_hexagon( map_id, hexagon_data, layer_id ) {
 
+  console.log("window");
+  console.log(window);
+
   console.log("hexagon data:" );
   console.log( hexagon_data ) ;
 

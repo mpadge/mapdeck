@@ -156,7 +156,7 @@
 
 ## Hexagon
 
-# access_token <- "pk.eyJ1Ijoic3ltYm9saXgiLCJhIjoiY2pqbm45Zmo1MGl1aTNxbmxwamFqb3Z6MSJ9.yIkj0tGNNh4u61DliOXV6g"
+# key <- read.dcf("~/Documents/.googleAPI", fields = "MAPBOX")
 #
 # df <- read.csv('https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/3d-heatmap/heatmap-data.csv')
 # df <- df[!is.na(df$lat), ]
@@ -164,9 +164,11 @@
 #
 #
 # mapdeck(
-# 	token = access_token
+# 	token = key
 # 	, style = "mapbox://styles/mapbox/dark-v9"
 # 	, pitch = 35
+# 	, location = c(0, 52)
+# 	, zoom = 6
 # ) %>%
 # 	add_hexagon(
 # 		data = df[1:1000, ]
