@@ -51,7 +51,6 @@ mapdeck <- function(
     )
   )
 
-  ## <script src="https://d3js.org/d3.v5.min.js"></script>
   header <- paste0(
     '<script src="https://unpkg.com/deck.gl@latest/deckgl.min.js"></script>
      <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.js"></script>
