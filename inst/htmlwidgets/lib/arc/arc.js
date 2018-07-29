@@ -2,28 +2,51 @@
 function add_arc( map_id, arc_data, layer_id ) {
   // reference: http://deck.gl/#/documentation/deckgl-api-reference/layers/arc-layer
 
+  //var lons = document.getElementById('lons');
+  //console.log("lons: ");
+  console.log(lons.value);
+
   const arcLayer = new ArcLayer({
     id: 'arc-'+layer_id,  // TODO
     data: arc_data,
     pickable: true,
-    getStrokeWidth: d => d.stroke_width,
+    getStrokeWidth: d => d.lon_to <= window.arc_width_val ? 1 : 0,
     getSourcePosition: d => [d.lon_from, d.lat_from],
     getTargetPosition: d => [d.lon_to, d.lat_to],
     getSourceColor: d => hexToRgb( d.stroke_from ),
     getTargetColor: d => hexToRgb( d.stroke_to ),
-    onHover: ({object}) => setTooltip(`${object.from.name} to ${object.to.name}`),
+    //onHover: ({object}) => setTooltip(`${object.from.name} to ${object.to.name}`),
     //onHover: info => console.log('Hovered:', info),
     //onClick: info => console.log('Clicked:', info)
     onClick: info => layer_click( map_id, "arc", info ),
-    //updateTriggers: {
-    //	getSourceColor:
-    //}
+    updateTriggers: {
+    	getStrokeWidth: window.arc_width_val
+    }
   });
 
-  window[map_id + 'layers'].push( arcLayer );
-  window[map_id + 'map'].setProps({ layers: window[map_id + 'layers'] });
-
+  //window[map_id + 'layers'].push( arcLayer );
+  window[map_id + 'map'].setProps({ layers: arcLayer });
 }
+
+Shiny.addCustomMessageHandler("handler1", arc_width);
+
+function arc_width( val ) {
+//  var val = document.getElementById("lons").value;
+//  console.log( "val: " + val );
+//  return d.lon_to <= val ? 0 : 1 ;
+  console.log("handler val: " );
+  console.log( val );
+  window.arc_width_val = val;
+  console.log( window.arc_width_val );
+  return window.arc_width_val;
+}
+
+
+/*
+function arc_width( d ) {
+	return d.lon_to <= 0 ? 0 : 1 ;
+}
+*/
 
 function update_arc( map_id, arc_data, layer_id ) {
 /*
@@ -53,9 +76,6 @@ function update_arc( map_id, arc_data, layer_id ) {
 }
 
 
-function updateLayerData(  ) {
-
-}
 
 function findObjectElementByKey(array, key, value, layer_data ) {
     for (var i = 0; i < array.length; i++) {

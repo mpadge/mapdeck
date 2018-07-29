@@ -14,6 +14,8 @@ HTMLWidgets.widget({
       	window.params = [];
       	window.params.push({ 'map_id' : el.id });
 
+      	window.arc_width_val = 0;
+
       	window[el.id + 'layers'] = []; // keep track of layers for overlaying multiple
       	// needs to be an array because .props takes an array of layers
 
