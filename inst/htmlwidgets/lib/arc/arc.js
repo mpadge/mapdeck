@@ -21,8 +21,8 @@ function add_arc( map_id, arc_data, layer_id ) {
   });
 
   //update_layer( map_id, 'arc-'+layer_id, arcLayer );
-  window[map_id + 'layers'].push( arcLayer );
-  //window[map_id + 'map'].setProps({ layers: arcLayer });
+  //window[map_id + 'layers'].push( arcLayer );
+  window[map_id + 'map'].setProps({ layers: arcLayer });
 }
 
 
