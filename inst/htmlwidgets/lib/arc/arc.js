@@ -24,9 +24,12 @@ function add_arc( map_id, arc_data, layer_id ) {
     }
   });
 
-  //window[map_id + 'layers'].push( arcLayer );
-  window[map_id + 'map'].setProps({ layers: arcLayer });
+  //update_layer( map_id, 'arc-'+layer_id, arcLayer );
+  window[map_id + 'layers'].push( arcLayer );
+  //window[map_id + 'map'].setProps({ layers: arcLayer });
 }
+
+
 
 Shiny.addCustomMessageHandler("handler1", arc_width);
 
@@ -41,6 +44,21 @@ function arc_width( val ) {
   return window.arc_width_val;
 }
 
+
+function update_layer( map_id, layer_id, layer ) {
+
+  var elem = findObjectElementByKey( window[map_id + 'map'].props.layers, 'id', layer_id);
+  if ( elem != -1 ) {
+  	window[ map_id + 'layers'][elem] = layer;
+  } else {
+  	window[map_id + 'layers'].push( layer );
+  }
+
+  console.log( "layers: " );
+  console.log( window[map_id + 'layers'] );
+
+  window[map_id + 'map'].setProps({ layers: [...window[map_id + 'layers'] ] });
+}
 
 /*
 function arc_width( d ) {
