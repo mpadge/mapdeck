@@ -16,12 +16,11 @@ function add_hexagon( map_id, hexagon_data, layer_id ) {
     elevationScale: 1000,
     opacity: 1,
     getRadius: d => d.radius,
-    getPosition: d => [d.lng, d.lat],
+    getPosition: d => [d.lon, d.lat],
     //onClick: info => layer_click( map_id, "hexagon", info )
 	});
 
   console.log( hexagonLayer );
 
-	window[map_id + 'layers'].push( hexagonLayer );
-  window[map_id + 'map'].setProps({ layers: window[map_id + 'layers'] });
+	update_layer( map_id, 'hexagon-'+layer_id, hexagonLayer );
 }

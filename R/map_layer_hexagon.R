@@ -25,7 +25,20 @@ mapdeckHexagonDependency <- function() {
 #' @examples
 #' \dontrun{
 #'
+#' df <- read.csv(paste0(
+#' 'https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/3d-heatmap/heatmap-data.csv'
+#' ))
 #'
+#' ## You need a valid access token from Mapbox
+#' key <- 'abc'
+#'
+#' mapdeck( token = key, style = 'mapbox://styles/mapbox/dark-v9', pitch = 45 ) %>%
+#' add_hexagon(
+#'   data = df
+#'   , lat = "lat"
+#'   , lon = "lng"
+#'   , layer_id = "hex_layer"
+#' )
 #'
 #' }
 #'
@@ -33,7 +46,7 @@ mapdeckHexagonDependency <- function() {
 add_hexagon <- function(
 	map,
 	data = get_map_data(map),
-	lng,
+	lon,
 	lat,
 	layer_id,
 	radius = NULL,
