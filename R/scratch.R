@@ -80,3 +80,28 @@
 # }
 # shinyApp(ui, server)
 #
+
+## transition
+
+## for each vertex, need to know where to transition from & to.
+## so will likely be two columns of the data.frame
+## but how is it started? needs a call-back. Is this a button press?
+
+# key <- read.dcf("~/Documents/.googleAPI", fields = "MAPBOX")
+#
+# df <- data.frame(lon = 0, lat = 0, radius = 10000)
+#
+# mapdeck(
+# 	token = key
+# 	, location = c(0, 0)
+# 	, zoom = 9
+# 	, style = 'mapbox://styles/mapbox/dark-v9'
+# ) %>% add_scatterplot(
+# 	data = df
+# 	, lon = 'lon'
+# 	, lat = 'lat'
+# 	, radius = 'radius'
+# 	, layer_id = 'scatter'
+# )
+
+
