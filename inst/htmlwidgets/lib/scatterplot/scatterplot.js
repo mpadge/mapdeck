@@ -10,15 +10,24 @@ function add_scatterplot( map_id, scatter_data, layer_id ) {
     radiusMinPixels: 1,
     getRadius: d => d.radius,
     getPosition: d => decode_points( d.polyline ),
-    getColor: d => hexToRGBA( d.fill_colour, d.fill_opacity ),
+    getColor: d => [255, 0, 0, 255], //hexToRGBA( d.fill_colour, d.fill_opacity ),
     onClick: info => layer_click( map_id, "scatterplot", info ),
-    transitions: {
-    	getColors: {
-    		duration: 1000,
-    		enter: value => [ value[0], value[1], value[2], 0] // fade in
-    	}
-    }
+    //transitions: {
+    //	getColor: {
+    //		duration: 300,
+    //		//enter: value => [ value[0], value[1], value[2], value[3] ] // fade in
+    //		//onStart: start_transition
+    //	}
+    //}
 	});
 
 	update_layer( map_id, 'scatterplot-'+layer_id, scatterLayer );
 }
+
+//Shiny.addCustomMessageHandler("handler1", start_transition);
+
+function start_transition( msg ) {
+	console.log('msg: ' + msg);
+  return 1;
+}
+
