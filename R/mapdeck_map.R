@@ -7,8 +7,9 @@
 #' @param width the width of the map
 #' @param height the height of the map
 #' @param padding the padding of the map
-#' @param pitch the pitch angle of the map
 #' @param style the style of the map
+#' @param pitch the pitch angle of the map
+#' @param zoom zoom level of the map
 #' @param location vector of lon and lat coordinates (in that order)
 #'
 #' @export
@@ -51,25 +52,24 @@ mapdeck <- function(
     )
   )
 
-  header <- paste0(
-    '<script src="https://unpkg.com/deck.gl@latest/deckgl.min.js"></script>
-     <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.js"></script>
-    <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.css" rel="stylesheet" />'
-    )
-
-
-  mapdeckmap$dependencies <- c(
-  	mapdeckmap$dependencies,
-  	list(
-  		htmltools::htmlDependency(
-  			name = "mapdeck",
-  			version = "9999",
-  			src=".",
-  			head = header,
-  			all_files = FALSE
-  		)
-  	)
-  )
+  # header <- paste0(
+  #   '<script src="https://unpkg.com/deck.gl@latest/deckgl.min.js"></script>
+  #    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.js"></script>
+  #   <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.css" rel="stylesheet" />'
+  #   )
+  #
+  # mapdeckmap$dependencies <- c(
+  # 	mapdeckmap$dependencies,
+  # 	list(
+  # 		htmltools::htmlDependency(
+  # 			name = "mapdeck",
+  # 			version = "9999",
+  # 			src=".",
+  # 			head = header,
+  # 			all_files = FALSE
+  # 		)
+  # 	)
+  # )
 
   return(mapdeckmap)
 }
@@ -115,10 +115,6 @@ renderMapdeck <- function(expr, env = parent.frame(), quoted = FALSE) {
 #' @param deferUntilFlush indicates whether actions performed against this
 #' instance should be carried out right away, or whether they should be held until
 #' after the next time all of the outputs are updated; defaults to TRUE.
-#' @examples
-#' \dontrun{
-#'
-#' }
 #' @export
 mapdeck_update <- function(
 	map_id,
@@ -147,6 +143,26 @@ mapdeck_update <- function(
 }
 
 
+#' Mapdeck view
+#'
+#' Changes the view of the of the map
+#'
+#' @inheritParams mapdeck
+#' @param map a \code{mapdeck} map object
+#' @param duration time in milliseconds of the transition
+#' @param transition type of transition
+#' @export
+mapdeck_view <- function(
+	map,
+	location,
+	zoom = 6,
+	duration = 0,
+	transition = c("linear", "fly")
+	) {
+
+	transition <- match.arg(transition)
+	invoke_method(map, 'change_location', location, duration, transition, zoom)
+}
 
 # Get Map Data
 #

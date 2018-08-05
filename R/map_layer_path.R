@@ -15,14 +15,17 @@ mapdeckPathDependency <- function() {
 #' The Path Layer takes in lists of coordinate points and renders them as
 #' extruded lines with mitering.
 #'
-#' @inheritParams add_arc
+#' @inheritParams add_polygon
 #'
-#' @param polyline column of \code{data} containing the polyline
-#' @param stroke_colour variable of \code{data} or hex colour for the stroke
-#' @param stroke_width width of the stroke
+#' @param stroke_opacity value between 1 and 255. Either a string specifying the
+#' column of \code{data} containing the stroke opacity of each shape, or a value
+#' between 1 and 255 to be applied to all the shapes
 #'
 #' @examples
 #' \dontrun{
+#'
+#' ## You need a valid access token from Mapbox
+#' key <- 'abc'
 #'
 #' mapdeck(
 #'   token = key
@@ -45,6 +48,7 @@ add_path <- function(
 	polyline = NULL,
 	stroke_colour = NULL,
 	stroke_width = NULL,
+	stroke_opacity = NULL,
 	layer_id,
 	digits = 6,
 	palette = viridisLite::viridis
@@ -61,10 +65,7 @@ add_path <- function(
 	## added to objArgs after the match.call() function
 	if( !is.null(polyline) && !polyline %in% names(objArgs) ) {
 		objArgs[['polyline']] <- polyline
-		## TODO(MULTILINESTRINGS)
-		## this unlist wont' work; needs a row per polyline, and therefore keep all
-		## the other columns consistent with those rows.
-		data[[polyline]] <- unlist(data[[polyline]])
+		data <- unlistMultiGeometry( data, polyline )
 	}
 
 	## parameter checks
@@ -120,17 +121,18 @@ add_path <- function(
 
 
 requiredPathColumns <- function() {
-	c("stroke_width", "stroke_colour")
+	c("stroke_width", "stroke_colour","stroke_opacity")
 }
 
 pathColumns <- function() {
-	c("polyline", "stroke_width", "stroke_colour")
+	c("polyline", "stroke_width", "stroke_colour", "stroke_opacity")
 }
 
 pathDefaults <- function(n) {
 	data.frame(
 		"stroke_colour" = rep("#440154", n),
 		"stroke_width" = rep(1, n),
+		"stroke_opacity" = rep(255, n),
 		stringsAsFactors = F
 	)
 }

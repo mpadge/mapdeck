@@ -1,79 +1,36 @@
-
-
-# ## ON CLICK
-# library(shiny)
-# library(data.table)
 #
-# ui <- fluidPage(
-# 	mapdeckOutput(outputId = "map")
-# )
-#
-# server <- function(input, output) {
-#
-# 	dt <- as.data.table(capitals)
-# 	access_token <- "pk.eyJ1Ijoic3ltYm9saXgiLCJhIjoiY2pqbm45Zmo1MGl1aTNxbmxwamFqb3Z6MSJ9.yIkj0tGNNh4u61DliOXV6g"
-#
-# 	dt[, key := 1]
-# 	dt[lat < 0, hemisphere := "south"]
-# 	dt[lat >= 0, hemisphere := "north"]
-#
-# 	dt <- dt[ country == "United Kingdom of Great Britain and Northern Ireland", .(country_from = country, capital_from = capital, lat_from = lat, lon_from = lon, key)][
-# 		dt[,  .(country_to = country, capital_to = capital, lat_to = lat, lon_to = lon, hemisphere, key) ]
-# 		, on = "key"
-# 		, allow.cartesian = T
-# 		]
-#
-# 	output$map <- renderMapdeck({
-#
-# 		mapdeck(
-# 			token = access_token
-# 			, style = "mapbox://styles/mapbox/dark-v9"
-# 			, pitch = 35
-# 		) %>%
-# 			add_arc(
-# 				data = dt
-# 				, lat_from = "lat_from"
-# 				, lat_to = "lat_to"
-# 				, lon_from = "lon_from"
-# 				, lon_to = "lon_to"
-# 				, stroke_from = "country_from"
-# 				, id = "country_to"
-# 				#, stroke_to = "hemisphere"
-# 			)
-# 	})
-#
-# 	observeEvent({input$map_arc_click}, {
-# 		print(input$map_arc_click)
-# 	})
-# }
-#
-# shinyApp(ui, server)
-
-
-
 # library(shiny)
 # library(shinydashboard)
-# library(data.table)
 # library(mapdeck)
+# library(data.table)
 #
 # ui <- dashboardPage(
 # 	dashboardHeader()
 # 	, dashboardSidebar(
-# 		shiny::uiOutput(outputId = "countries")
+# 		uiOutput(
+# 			outputId = "countries"
+# 		)
+# 		, radioButtons(
+# 			inputId = "transition"
+# 			, label = "transition"
+# 			, choices = c("fly", "linear")
+# 		)
 # 	)
 # 	, dashboardBody(
-# 		mapdeckOutput(outputId = "map")
+# 		box(
+# 			width = 12
+#   		, mapdeckOutput(
+#   			outputId = "map"
+#   			# , height = "600px"
+#   		)
+# 		)
 # 	)
 # )
 #
-# server <- function(input, output) {
+# server <- function(input, output, session) {
 #
+# 	key <- read.dcf("~/Documents/.googleAPI", fields = "MAPBOX")
 # 	dt <- as.data.table(capitals)
-# 	dt[, key := 1]
-# 	dt[lat < 0, hemisphere := "south"]
-# 	dt[lat >= 0, hemisphere := "north"]
-#
-# 	access_token <- "pk.eyJ1Ijoic3ltYm9saXgiLCJhIjoiY2pqbm45Zmo1MGl1aTNxbmxwamFqb3Z6MSJ9.yIkj0tGNNh4u61DliOXV6g"
 #
 # 	output$countries <- renderUI({
 # 		selectInput(
@@ -84,75 +41,45 @@
 # 		)
 # 	})
 #
-# 	dt_countries <- reactive({
-#
-# 		if(is.null(input$countries)) return()
-#
-# 		selected_country <- input$countries
-#
-# 		dt_plot <- dt[ country == selected_country, .(country_from = country, capital_from = capital, lat_from = lat, lon_from = lon, key)][
-# 			dt[country != selected_country,  .(country_to = country, capital_to = capital, lat_to = lat, lon_to = lon, hemisphere, key) ]
-# 			, on = "key"
-# 			, allow.cartesian = T
-# 			]
-#
-# 		print(dt_plot)
-# 		return(dt_plot)
+# 	selected_country <- reactive({
+# 		as.numeric( dt[country == input$countries, .(lon, lat)] )
 # 	})
 #
 # 	output$map <- renderMapdeck({
 #
-# 		dt_plot <- dt[ country == "United Kingdom of Great Britain and Northern Ireland", .(country_from = country, capital_from = capital, lat_from = lat, lon_from = lon, key)][
-# 			dt[country != "United Kingdom of Great Britain and Northern Ireland" ,  .(country_to = country, capital_to = capital, lat_to = lat, lon_to = lon, hemisphere, key) ]
-# 			, on = "key"
-# 			, allow.cartesian = T
-# 			]
+# 		if(is.null(dt) || is.null(dt)) return()
 #
-# 		print("reinitialising map")
-# 		print(dt_plot)
-#
-		# mapdeck(
-		# 	token = access_token
-		# 	, style = "mapbox://styles/mapbox/dark-v9"
-		# 	, pitch = 35
-		# ) %>%
-		# 	add_arc(
-		# 		data = dt_plot
-		# 		, layer_id = "arc_layer"
-		# 		, origin = c("lon_from", "lat_from")
-		# 		, destination = c("lon_to", "lat_to")
-		# 		, stroke_from = "country_from"
-		# 		, id = "country_to"
-		# 		#, stroke_to = "hemisphere"
-		# 	) %>%
+# 		mapdeck(
+# 			token = key
+# 			, style = "mapbox://styles/mapbox/dark-v9"
+# 			, pitch = 35
+# 		) %>%
 # 			add_scatterplot(
 # 				data = dt
 # 				, lat = "lat"
 # 				, lon = "lon"
 # 				, radius = 100000
 # 				, fill_colour = "country"
+# 				, layer_id = "scatter"
 # 			)
 # 	})
 #
 # 	observeEvent({
-# 		input$countries
+# 		c(input$countries)
 # 	}, {
+# 		if(is.null(input$transition) || is.null(selected_country())) return()
+#
 # 		mapdeck_update('map') %>%
-# 			update_arc(
-# 				, data = dt_countries()
-# 				, layer_id = "arc_layer"
-# 				, lat_from = "lat_from"
-# 				, lat_to = "lat_to"
-# 				, lon_from = "lon_from"
-# 				, lon_to = "lon_to"
-# 				, stroke_from = "country_from"
-# 				, id = "country_to"
-# 				#, stroke_to = "hemisphere"
+# 			mapdeck_view(
+# 				location = selected_country()
+# 				, transition = input$transition
+# 				, duration = 2000
+# 				, zoom = 4
 # 			)
 # 	})
 # }
-#
 # shinyApp(ui, server)
+
 
 ## Hexagon
 
@@ -182,32 +109,6 @@
 # 		, lat = "lat"
 # 		, layer_id = "hex"
 # 	)
-
-
-### SF
-
-# library(sf)
-#
-# sf <- sf::st_read("http://eric.clst.org/assets/wiki/uploads/Stuff/gz_2010_us_050_00_500k.json")
-# access_token <- "pk.eyJ1Ijoic3ltYm9saXgiLCJhIjoiY2pqbm45Zmo1MGl1aTNxbmxwamFqb3Z6MSJ9.yIkj0tGNNh4u61DliOXV6g"
-#
-# mapdeck(
-#   token = access_token
-#   , style = 'mapbox://styles/mapbox/dark-v9'
-#   ) %>%
-#   add_polygon(
-#   	data = sf[!sf$STATE %in% c("02","15","72"), ]
-#     , layer = "polygon_layer"
-#   	, fill_colour = "CENSUSAREA"
-#   	)
-
-#
-# enc <- googlePolylines::encode(sf, strip = T)
-# str(enc)
-#
-# enc[['geometry']] <- unlist(enc[['geometry']])
-
-
 
 
 

@@ -5,19 +5,23 @@
 \title{Add Path}
 \usage{
 add_path(map, data = get_map_data(map), polyline = NULL,
-  stroke_colour = NULL, stroke_width = NULL, layer_id, digits = 6,
-  palette = viridisLite::viridis)
+  stroke_colour = NULL, stroke_width = NULL, stroke_opacity = NULL,
+  layer_id, digits = 6, palette = viridisLite::viridis)
 }
 \arguments{
 \item{map}{a mapdeck map object}
 
 \item{data}{data to be used in the layer}
 
-\item{polyline}{column of \code{data} containing the polyline}
+\item{polyline}{column of \code{data} containing the polylines}
 
 \item{stroke_colour}{variable of \code{data} or hex colour for the stroke}
 
 \item{stroke_width}{width of the stroke}
+
+\item{stroke_opacity}{value between 1 and 255. Either a string specifying the
+column of \code{data} containing the stroke opacity of each shape, or a value
+between 1 and 255 to be applied to all the shapes}
 
 \item{layer_id}{single value specifying an id for the layer. Use this value to
 distinguish between shape layers of the same type}
@@ -33,6 +37,9 @@ extruded lines with mitering.
 }
 \examples{
 \dontrun{
+
+## You need a valid access token from Mapbox
+key <- 'abc'
 
 mapdeck(
   token = key

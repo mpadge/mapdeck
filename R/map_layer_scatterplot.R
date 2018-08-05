@@ -15,7 +15,7 @@ mapdeckScatterplotDependency <- function() {
 #' The Scatterplot Layer takes in coordinate points and renders them as circles
 #' with a certain radius.
 #'
-#' @inheritParams add_arc
+#' @inheritParams add_polygon
 #' @param lon column containing longitude values
 #' @param lat column containing latitude values
 #' @param radius in metres
@@ -23,7 +23,9 @@ mapdeckScatterplotDependency <- function() {
 #' @examples
 #' \dontrun{
 #'
-#' key <- "pk.eyJ1Ijoic3ltYm9saXgiLCJhIjoiY2pqbm45Zmo1MGl1aTNxbmxwamFqb3Z6MSJ9.yIkj0tGNNh4u61DliOXV6g"
+#'\dontrun{
+#' ## You need a valid access token from Mapbox
+#' key <- 'abc'
 #'
 #' mapdeck( token = key, style = 'mapbox://styles/mapbox/dark-v9', pitch = 45 ) %>%
 #' add_scatterplot(
@@ -36,7 +38,10 @@ mapdeckScatterplotDependency <- function() {
 #' )
 #' }
 #'
-#' df <- read.csv('https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/3d-heatmap/heatmap-data.csv')
+#' df <- read.csv(paste0(
+#' 'https://raw.githubusercontent.com/uber-common/deck.gl-data/master/',
+#' 'examples/3d-heatmap/heatmap-data.csv'
+#' ))
 #'
 #' mapdeck( token = key, style = 'mapbox://styles/mapbox/dark-v9', pitch = 45 ) %>%
 #' add_scatterplot(
@@ -45,18 +50,18 @@ mapdeckScatterplotDependency <- function() {
 #'   , lon = "lng"
 #'   , layer_id = "scatter_layer"
 #' )
-#'
+#' }
 #'
 #' @export
 add_scatterplot <- function(
 	map,
 	data = get_map_data(map),
-	lng,
-	lat,
+	lon = NULL,
+	lat = NULL,
+	polyline = NULL,
 	radius = NULL,
 	fill_colour = NULL,
 	fill_opacity = NULL,
-	stroke_width = NULL,
 	layer_id,
 	digits = 6,
 	palette = viridisLite::viridis
@@ -64,10 +69,27 @@ add_scatterplot <- function(
 
 	objArgs <- match.call(expand.dots = F)
 
-	## parmater checks
+	data <- normaliseSfData(data, "POINT")
+	polyline <- findEncodedColumn(data, polyline)
 
+	if( !is.null(polyline) && !polyline %in% names(objArgs) ) {
+		objArgs[['polyline']] <- polyline
+		data <- unlistMultiGeometry( data, polyline )
+	}
+
+	## parmater checks
+	usePolyline <- isUsingPolyline(polyline)
 
 	## end parameter checks
+	if ( !usePolyline ) {
+		## TODO(check only a data.frame)
+		data[['polyline']] <- googlePolylines::encode(data, lon = lon, lat = lat, byrow = TRUE)
+		polyline <- 'polyline'
+    ## TODO(check lon & lat exist / passed in as arguments )
+		objArgs[['lon']] <- NULL
+		objArgs[['lat']] <- NULL
+		objArgs[['polyline']] <- polyline
+	}
 
 	allCols <- scatterplotColumns()
 	requiredCols <- requiredScatterplotColumns()
@@ -95,7 +117,6 @@ add_scatterplot <- function(
 	if(length(requiredDefaults) > 0){
 		shape <- addDefaults(shape, requiredDefaults, "scatterplot")
 	}
-
 	shape <- jsonlite::toJSON(shape, digits = digits)
 
 	map <- addDependency(map, mapdeckScatterplotDependency())
@@ -106,15 +127,14 @@ add_scatterplot <- function(
 
 
 requiredScatterplotColumns <- function() {
-	c("stroke_width", "radius",
-		"fill_opacity", "fill_colour")
+	c("radius",
+		"fill_colour", "fill_opacity")
 }
 
 
 scatterplotColumns <- function() {
-	c('lat', 'lon', "elevation", "radius",
-		'fill_colour', 'fill_opacity',
-		'stroke_width')
+	c('polyline', "elevation", "radius",
+		'fill_colour', 'fill_opacity')
 }
 
 scatterplotDefaults <- function(n) {
@@ -122,8 +142,7 @@ scatterplotDefaults <- function(n) {
 		"elevation" = rep(0, n),
 		"radius" = rep(1, n),
 		"fill_colour" = rep("#0000FF", n),
-		"fill_opacity" = rep(0.8, n),
-		"stroke_width" = rep(1, n),
+		"fill_opacity" = rep(255, n),
 		stringsAsFactors = F
 	)
 }

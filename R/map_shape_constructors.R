@@ -37,7 +37,7 @@ createMapObject <- function(data, cols, objArgs) {
 
 			## the rep(eval(info_window)) won't work if it's a list...
 			## this is designed for when the value passed is a single value, like a colour #00FF00
-			setNames(as.data.frame(rep(eval(objArgs[[x]]), nrow(df)), stringsAsFactors = F), names(objArgs)[x])
+			stats::setNames(as.data.frame(rep(eval(objArgs[[x]]), nrow(df)), stringsAsFactors = F), names(objArgs)[x])
 		})
 		df <- cbind(df, do.call(cbind, extraCols))
 	}
@@ -88,10 +88,14 @@ addDefaults <- function(shape, requiredDefaults, shapeType) {
 	defaults <- switch(
 		shapeType
 		, "arc" = arcDefaults(n)
-		, "path" = pathDefaults(n)
-		, "scatterplot" = scatterplotDefaults(n)
-		, "polygon" = polygonDefaults(n)
+		, "grid" = gridDefaults(n)
+		, "line" = lineDefaults(n)
 		, "hexagon" = hexagonDefaults(n)
+		, "path" = pathDefaults(n)
+		, "pointcloud" = pointcloudDefaults(n)
+		, "polygon" = polygonDefaults(n)
+		, "scatterplot" = scatterplotDefaults(n)
+		, "screengrid" = screengridDefaults(n)
 		)
 	shape <- cbind(shape, defaults[, requiredDefaults, drop = F])
 	return(shape)

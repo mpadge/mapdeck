@@ -4,20 +4,29 @@
 \alias{add_scatterplot}
 \title{Add Scatterplot}
 \usage{
-add_scatterplot(map, data = get_map_data(map), lng, lat, radius = NULL,
-  fill_colour = NULL, fill_opacity = NULL, stroke_width = NULL, layer_id,
-  digits = 6, palette = viridisLite::viridis)
+add_scatterplot(map, data = get_map_data(map), lon = NULL, lat = NULL,
+  polyline = NULL, radius = NULL, fill_colour = NULL,
+  fill_opacity = NULL, layer_id, digits = 6,
+  palette = viridisLite::viridis)
 }
 \arguments{
 \item{map}{a mapdeck map object}
 
 \item{data}{data to be used in the layer}
 
+\item{lon}{column containing longitude values}
+
 \item{lat}{column containing latitude values}
+
+\item{polyline}{column of \code{data} containing the polylines}
 
 \item{radius}{in metres}
 
-\item{stroke_width}{width of the stroke}
+\item{fill_colour}{column of \code{data} or hex colour for the fill colour}
+
+\item{fill_opacity}{value between 1 and 255. Either a string specifying the
+column of \code{data} containing the fill opacity of each shape, or a value
+between 1 and 255 to be applied to all the shapes}
 
 \item{layer_id}{single value specifying an id for the layer. Use this value to
 distinguish between shape layers of the same type}
@@ -26,8 +35,6 @@ distinguish between shape layers of the same type}
 should be used for the latitude / longitude coordinates.}
 
 \item{palette}{a function, or list of functions which generates hex colours}
-
-\item{lon}{column containing longitude values}
 }
 \description{
 The Scatterplot Layer takes in coordinate points and renders them as circles
@@ -36,7 +43,9 @@ with a certain radius.
 \examples{
 \dontrun{
 
-key <- "pk.eyJ1Ijoic3ltYm9saXgiLCJhIjoiY2pqbm45Zmo1MGl1aTNxbmxwamFqb3Z6MSJ9.yIkj0tGNNh4u61DliOXV6g"
+\dontrun{
+## You need a valid access token from Mapbox
+key <- 'abc'
 
 mapdeck( token = key, style = 'mapbox://styles/mapbox/dark-v9', pitch = 45 ) \%>\%
 add_scatterplot(
@@ -49,7 +58,10 @@ add_scatterplot(
 )
 }
 
-df <- read.csv('https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/3d-heatmap/heatmap-data.csv')
+df <- read.csv(paste0(
+'https://raw.githubusercontent.com/uber-common/deck.gl-data/master/',
+'examples/3d-heatmap/heatmap-data.csv'
+))
 
 mapdeck( token = key, style = 'mapbox://styles/mapbox/dark-v9', pitch = 45 ) \%>\%
 add_scatterplot(
@@ -58,6 +70,6 @@ add_scatterplot(
   , lon = "lng"
   , layer_id = "scatter_layer"
 )
-
+}
 
 }

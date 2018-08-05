@@ -1,25 +1,19 @@
 
-function add_scatterplot( map_id, json, layer_id ) {
-
-  console.log("scatter data");
-  console.log( json );
+function add_scatterplot( map_id, scatter_data, layer_id ) {
 
   // reference: https://github.com/uber/deck.gl/blob/master/docs/layers/scatterplot-layer.md
+  console.log( scatter_data );
 
 	const scatterLayer = new deck.ScatterplotLayer({
 		id: 'scatterplot-'+layer_id,  // TODO
-		data: json,
+		data: scatter_data,
     radiusScale: 1,
     radiusMinPixels: 1,
     getRadius: d => d.radius,
-    getPosition: d => [d.lng, d.lat],
-    //getColor: d => [d.fill_colour_red, d.fill_colour_green, d.fill_colour_blue]
-    getColor: d => hexToRgb( d.fill_colour ),
+    getPosition: d => decode_points( d.polyline ),
+    getColor: d => hexToRGBA( d.fill_colour, d.fill_opacity ),
     onClick: info => layer_click( map_id, "scatterplot", info )
 	});
 
-  console.log( window[map_id + 'map'] ); // this is teh deck obj
-  console.log( window[map_id + 'layers'] );
-	window[map_id + 'layers'].push( scatterLayer );
-  window[map_id + 'map'].setProps({ layers: window[map_id + 'layers'] });
+	update_layer( map_id, 'scatterplot-'+layer_id, scatterLayer );
 }

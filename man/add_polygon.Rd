@@ -5,8 +5,9 @@
 \title{Add Polygon}
 \usage{
 add_polygon(map, data = get_map_data(map), polyline = NULL,
-  stroke_colour = NULL, stroke_width = NULL, fill_colour = NULL, layer_id,
-  digits = 6, palette = viridisLite::viridis)
+  stroke_colour = NULL, stroke_width = NULL, fill_colour = NULL,
+  fill_opacity = NULL, layer_id, digits = 6,
+  palette = viridisLite::viridis)
 }
 \arguments{
 \item{map}{a mapdeck map object}
@@ -20,6 +21,10 @@ add_polygon(map, data = get_map_data(map), polyline = NULL,
 \item{stroke_width}{width of the stroke}
 
 \item{fill_colour}{column of \code{data} or hex colour for the fill colour}
+
+\item{fill_opacity}{value between 1 and 255. Either a string specifying the
+column of \code{data} containing the fill opacity of each shape, or a value
+between 1 and 255 to be applied to all the shapes}
 
 \item{layer_id}{single value specifying an id for the layer. Use this value to
 distinguish between shape layers of the same type}
@@ -35,7 +40,8 @@ The Polygon Layer renders filled and/or stroked polygons.
 \examples{
 \dontrun{
 
-key <- "pk.eyJ1Ijoic3ltYm9saXgiLCJhIjoiY2pqbm45Zmo1MGl1aTNxbmxwamFqb3Z6MSJ9.yIkj0tGNNh4u61DliOXV6g"
+## You need a valid access token from Mapbox
+key <- 'abc'
 
 mapdeck(
   token = key
@@ -45,10 +51,25 @@ mapdeck(
   ) \%>\%
   add_polygon(
   	data = melbourne
-    , polyline = "geometry"
-    , layer = "polygon_layer"
-  	, fill_colour = "fillColor"
+   , polyline = "geometry"
+   , layer = "polygon_layer"
+  	, fill_colour = "fillColor",
   	)
+
+library(sf)
+library(geojsonsf)
+
+sf <- geojson_sf("https://symbolixau.github.io/data/geojson/SA2_2016_VIC.json")
+
+mapdeck(
+	token = key
+	, style = 'mapbox://styles/mapbox/dark-v9'
+) \%>\%
+	add_polygon(
+		data = sf
+		, layer = "polygon_layer"
+		, fill_colour = "SA2_NAME16"
+	)
 
 }
 

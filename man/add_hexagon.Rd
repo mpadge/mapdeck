@@ -4,13 +4,15 @@
 \alias{add_hexagon}
 \title{Add hexagon}
 \usage{
-add_hexagon(map, data = get_map_data(map), lng, lat, layer_id,
+add_hexagon(map, data = get_map_data(map), lon, lat, layer_id,
   radius = NULL, digits = 6)
 }
 \arguments{
 \item{map}{a mapdeck map object}
 
 \item{data}{data to be used in the layer}
+
+\item{lon}{column containing longitude values}
 
 \item{lat}{column containing latitude values}
 
@@ -22,8 +24,6 @@ distinguish between shape layers of the same type}
 \item{digits}{integer. Use this parameter to specify how many digits (decimal places)
 should be used for the latitude / longitude coordinates.}
 
-\item{lon}{column containing longitude values}
-
 \item{colour_range}{palette of colours}
 }
 \description{
@@ -34,7 +34,20 @@ The color and height of the hexagon is scaled by number of points it contains.
 \examples{
 \dontrun{
 
+df <- read.csv(paste0(
+'https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/3d-heatmap/heatmap-data.csv'
+))
 
+## You need a valid access token from Mapbox
+key <- 'abc'
+
+mapdeck( token = key, style = 'mapbox://styles/mapbox/dark-v9', pitch = 45 ) \%>\%
+add_hexagon(
+  data = df
+  , lat = "lat"
+  , lon = "lng"
+  , layer_id = "hex_layer"
+)
 
 }
 

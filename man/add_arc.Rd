@@ -5,7 +5,8 @@
 \title{Add arc}
 \usage{
 add_arc(map, data = get_map_data(map), layer_id, origin, destination,
-  id = NULL, stroke_from = NULL, stroke_to = NULL, stroke_width = NULL,
+  id = NULL, stroke_from = NULL, stroke_from_opacity = NULL,
+  stroke_to = NULL, stroke_to_opacity = NULL, stroke_width = NULL,
   digits = 6, palette = viridisLite::viridis)
 }
 \arguments{
@@ -16,15 +17,23 @@ add_arc(map, data = get_map_data(map), layer_id, origin, destination,
 \item{layer_id}{single value specifying an id for the layer. Use this value to
 distinguish between shape layers of the same type}
 
-\item{origin}{vector of longitude and latitude columns}
+\item{origin}{vector of longitude and latitude columns, or an \code{sfc} column}
 
-\item{destination}{vector of longitude and latitude columns}
+\item{destination}{vector of longitude and latitude columns, or an \code{sfc} column}
 
 \item{id}{an id value in \code{data} to identify layers when interacting in Shiny apps}
 
 \item{stroke_from}{variable or hex colour to use as the staring stroke colour}
 
+\item{stroke_from_opacity}{value between 1 and 255. Either a string specifying the
+column of \code{data} containing the stroke opacity of each shape, or a value
+between 1 and 255 to be applied to all the shapes}
+
 \item{stroke_to}{variable or hex colour to use as the ending stroke colour}
+
+\item{stroke_to_opacity}{value between 1 and 255. Either a string specifying the
+column of \code{data} containing the stroke opacity of each shape, or a value
+between 1 and 255 to be applied to all the shapes}
 
 \item{stroke_width}{width of the stroke}
 
@@ -39,7 +48,8 @@ The Arc Layer renders raised arcs joining pairs of source and target coordinates
 \examples{
 \dontrun{
 
-key <- "pk.eyJ1Ijoic3ltYm9saXgiLCJhIjoiY2pqbm45Zmo1MGl1aTNxbmxwamFqb3Z6MSJ9.yIkj0tGNNh4u61DliOXV6g"
+## You need a valid access token from Mapbox
+key <- 'abc'
 
 url <- 'https://raw.githubusercontent.com/plotly/datasets/master/2011_february_aa_flight_paths.csv'
 flights <- read.csv(url)
