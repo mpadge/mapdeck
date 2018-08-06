@@ -14,7 +14,7 @@ function add_scatterplot( map_id, scatter_data, layer_id ) {
     onClick: info => layer_click( map_id, "scatterplot", info ),
     transitions: {
     	getColors: {
-    		duration: 1000,
+    		duration: 5000,
     		enter: value => [ value[0], value[1], value[2], 0] // fade in
     	}
     }
