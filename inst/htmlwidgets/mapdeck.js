@@ -6,7 +6,6 @@ HTMLWidgets.widget({
   factory: function(el, width, height) {
 
     // TODO: define shared variables for this instance
-
     return {
 
       renderValue: function(x) {
@@ -14,88 +13,39 @@ HTMLWidgets.widget({
       	window.params = [];
       	window.params.push({ 'map_id' : el.id });
 
-      	window.arc_width_val = 0;
-
       	window[el.id + 'layers'] = []; // keep track of layers for overlaying multiple
       	// needs to be an array because .props takes an array of layers
 
         var mapDiv = document.getElementById(el.id);
         mapDiv.className = 'mapdeckmap';
 
+        // INITIAL VIEW
+        window[el.id + 'INITIAL_VIEW_STATE'] = {
+        	longitude: x.location[0],
+        	latitude: x.location[1],
+        	zoom: x.zoom,
+        	pitch: x.pitch
+        };
+
+        window[el.id + 'VIEW_STATE_CHANGE'] = {
+
+        };
+
         const	deckgl = new deck.DeckGL({
           	mapboxApiAccessToken: x.access_token,
 			      container: el.id,
 			      mapStyle: x.style,
-			      longitude: x.location[0],
-			      latitude: x.location[1],
-			      zoom: x.zoom,
-			      pitch: x.pitch,
+			      initialViewState: window[el.id + 'INITIAL_VIEW_STATE'],
 			      layers: []
 			    });
 
 			    window[el.id + 'map'] = deckgl;
-
 			    initialise_map(el, x);
-/*
-       if (HTMLWidgets.shinyMode) {
-       	// use setInterval to check if the map can be loaded
-	      // the map is dependant on the mapdeck JS resource
-	      // - usually implemented via callback
-
-	      console.log(" re-initialising map ");
-
-	      var checkExists = setInterval( function() {
-
-	      	const deckgl = new deck.DeckGL({
-          	mapboxApiAccessToken: x.access_token,
-			      container: el.id,
-			      mapStyle: x.style,
-			      longitude: x.location[1],
-			      latitude: x.location[0],
-			      zoom: x.zoom,
-			      pitch: x.pitch
-          });
-
-          if (deck !== undefined) {
-            //console.log("exists");
-            clearInterval(checkExists);
-
-            window[el.id + 'map'] = deckgl;
-
-            initialise_map(el, x);
-
-          } else {
-            //console.log("does not exist!");
-          }
-
-	      }, 100);
-
-       } else {
-
-         	console.log("loading map");
-          const deckgl = new deck.DeckGL({
-          	mapboxApiAccessToken: x.access_token,
-			      container: el.id,
-			      mapStyle: x.style,
-			      longitude: x.location[0],
-			      latitude: x.location[1],
-			      zoom: x.zoom,
-			      pitch: x.pitch
-          });
-
-          window[el.id + 'map'] = deckgl;
-
-          initialise_map(el, x);
-       }
-*/
-       //console.log(hexToRgb("#0F0F0F"));
-
       },
 
       resize: function(width, height) {
 
         // TODO: code to re-render the widget with a new size
-
       }
 
     };
@@ -103,40 +53,54 @@ HTMLWidgets.widget({
 });
 
 
+function change_location( map_id, location, duration, transition, zoom ) {
+
+	window[map_id + 'map'].setProps({
+    viewState: {
+      longitude: location[0],
+      latitude: location[1],
+      zoom: zoom,
+      pitch: 0,
+      bearing: 0,
+      transitionInterpolator: transition === "fly" ? new deck.FlyToInterpolator() : new deck.LinearInterpolator(),
+      transitionDuration: duration
+    },
+  });
+}
+
 if (HTMLWidgets.shinyMode) {
 
-    Shiny.addCustomMessageHandler("mapdeckmap-calls", function (data) {
+  Shiny.addCustomMessageHandler("mapdeckmap-calls", function (data) {
 
-        var id = data.id,   // the div id of the map
-            el = document.getElementById(id),
-            map = el,
-            call = [],
-            i = 0;
+    var id = data.id,   // the div id of the map
+      el = document.getElementById(id),
+      map = el,
+      call = [],
+      i = 0;
 
+    if (!map) {
+      //console.log("Couldn't find map with id " + id);
+      return;
+    }
 
-        if (!map) {
-            //console.log("Couldn't find map with id " + id);
-            return;
-        }
+    for (i = 0; i < data.calls.length; i++) {
 
-        for (i = 0; i < data.calls.length; i++) {
+      call = data.calls[i];
 
-            call = data.calls[i];
+      //push the mapId into the call.args
+      call.args.unshift(id);
 
-            //push the mapId into the call.args
-            call.args.unshift(id);
+      if (call.dependencies) {
+        Shiny.renderDependencies(call.dependencies);
+      }
 
-            if (call.dependencies) {
-                Shiny.renderDependencies(call.dependencies);
-            }
-
-            if (window[call.method]) {
-                window[call.method].apply(window[id + 'map'], call.args);
-            } else {
-                //console.log("Unknown function " + call.method);
-            }
-        }
-    });
+      if (window[call.method]) {
+        window[call.method].apply(window[id + 'map'], call.args);
+      } else {
+        //console.log("Unknown function " + call.method);
+      }
+    }
+  });
 }
 
 function initialise_map(el, x) {
@@ -163,23 +127,24 @@ function initialise_map(el, x) {
 }
 
 
-function change_location( map_id, location ) {
+function findObjectElementByKey(array, key, value, layer_data ) {
+    for (var i = 0; i < array.length; i++) {
+        if (array[i][key] === value) {
+            return i;
+        }
+    }
+    return -1;
+}
 
-	console.log( location );
-	console.log( location[0] );
 
-	window[map_id + 'map'].setProps({
-    viewState: {
-      longitude: location[0],
-      latitude: location[1],
-      zoom: 10,
-      pitch: 0,
-      bearing: 0
-    },
-    transitionInterpolator: new deck.experimental.ViewportFlyToInterpolator(),
-    transitionDuration: 5000
-  });
-
+function update_layer( map_id, layer_id, layer ) {
+  var elem = findObjectElementByKey( window[map_id + 'map'].props.layers, 'id', layer_id);
+  if ( elem != -1 ) {
+  	window[ map_id + 'layers'][elem] = layer;
+  } else {
+  	window[map_id + 'layers'].push( layer );
+  }
+  window[map_id + 'map'].setProps({ layers: [...window[map_id + 'layers'] ] });
 }
 
 
@@ -193,6 +158,33 @@ const hexToRgb = hex =>
              ,(m, r, g, b) => '#' + r + r + g + g + b + b)
     .substring(1).match(/.{2}/g)
     .map(x => parseInt(x, 16));
+
+const hexToRGBA = (hex, alpha = 255) => {
+    let parseString = hex;
+    if (hex.startsWith('#')) {parseString = hex.slice(1, 7);}
+    if (parseString.length !== 6) {return null;}
+    const r = parseInt(parseString.slice(0, 2), 16);
+    const g = parseInt(parseString.slice(2, 4), 16);
+    const b = parseInt(parseString.slice(4, 6), 16);
+    if (isNaN(r) || isNaN(g) || isNaN(b)) {return null;}
+    return [r, g, b, alpha];
+    //return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
+
+/**
+ * Converts a 'vector' of hex colours (with alpha) into an array
+ */
+function to_rgba( colour_range ) {
+	var arr = [],
+	i,
+	n = colour_range.length;
+
+	for (i = 0; i < n; i++) {
+		arr.push( hexToRGBA( colour_range[i]) );
+	}
+  console.log( arr );
+  return arr;
+}
 
 function layer_click( map_id, layer, info ) {
 
@@ -263,8 +255,6 @@ function decode_polyline(str, precision) {
 
     coordinates.push([lng / factor, lat / factor]);
   }
-
+  //console.log(coordinates);
   return coordinates;
 }
-
-
