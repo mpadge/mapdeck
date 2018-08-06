@@ -36,7 +36,8 @@ HTMLWidgets.widget({
 			      container: el.id,
 			      mapStyle: x.style,
 			      initialViewState: window[el.id + 'INITIAL_VIEW_STATE'],
-			      layers: []
+			      layers: [],
+			      this_stroke_width: 0
 			    });
 
 			    window[el.id + 'map'] = deckgl;

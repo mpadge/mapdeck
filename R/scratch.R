@@ -10,6 +10,10 @@
 # 		mapdeckOutput(
 # 			outputId = "map"
 # 		)
+# 		, actionButton(
+# 			inputId = "arc_width"
+# 			, label = "stroke width"
+# 		)
 # 		, sliderInput(
 # 			inputId = "lons"
 # 			, label = "longitudes"
@@ -18,18 +22,10 @@
 # 			, value = 75
 # 			, step = 1
 # 		)
-#
-# # 		tags$script(HTML(
-# # 			'function arc_width( d ) {
-# #         var val = document.getElementById("lons").value;
-# #         console.log( "val: " + val );
-# # 			  return d.lon_to <= val ? 0 : 1 ;
-# # 			}'
-# # 		))
-#
 # 	)
 # )
 # server <- function(input, output, session) {
+# 	key <- read.dcf("~/Documents/.googleAPI", fields = "MAPBOX")
 # 	dt <- as.data.table(capitals)
 # 	dt[, key := 1]
 # 	dt[lat < 0, hemisphere := "south"]
@@ -57,25 +53,10 @@
 # 			)
 # 	})
 #
-# 	observeEvent({input$lons}, {
-#
-# 		session$sendCustomMessage("handler1", input$lons)
-#
-# 		# mapdeck(
-# 		# 	token = key
-# 		# 	, style = "mapbox://styles/mapbox/dark-v9"
-# 		# 	, pitch = 35
-# 		# ) %>%
-# 		# 	add_arc(
-# 		# 		data = dt_plot
-# 		# 		, layer_id = "arc_layer"
-# 		# 		, origin = c("lon_from", "lat_from")
-# 		# 		, destination = c("lon_to", "lat_to")
-# 		# 		, stroke_from = "country_from"
-# 		# 		, id = "country_to"
-# 		# 	)
+# 	observeEvent({input$arc_width}, {
+# 		session$sendCustomMessage("handler1", input$arc_width)
 # 	})
 #
 # }
 # shinyApp(ui, server)
-
+#
