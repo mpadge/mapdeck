@@ -44,8 +44,8 @@
 #
 # shinyApp(ui, server)
 
-
-
+# df <- data.frame(lon = 0, lat = 0, radius = 10000)
+#
 # mapdeck(
 # 		token = key
 # 		, location = c(0, 0)
