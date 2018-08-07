@@ -89,6 +89,7 @@ addDefaults <- function(shape, requiredDefaults, shapeType) {
 		, "scatterplot" = scatterplotDefaults(n)
 		, "screengrid" = screengridDefaults(n)
 		, "text" = textDefaults(n)
+		, "textcluster" = textclusterDefaults(n)
 		)
 	shape <- cbind(shape, defaults[, requiredDefaults, drop = F])
 	return(shape)
