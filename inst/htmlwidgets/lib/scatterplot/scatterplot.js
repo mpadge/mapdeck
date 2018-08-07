@@ -12,13 +12,21 @@ function add_scatterplot( map_id, scatter_data, layer_id ) {
     getPosition: d => decode_points( d.polyline ),
     getColor: d => [255, 0, 0, 255], //hexToRGBA( d.fill_colour, d.fill_opacity ),
     onClick: info => layer_click( map_id, "scatterplot", info ),
-    //transitions: {
-    //	getColor: {
-    //		duration: 300,
-    //		//enter: value => [ value[0], value[1], value[2], value[3] ] // fade in
-    //		//onStart: start_transition
-    //	}
-    //}
+    transitions: {
+    	getColor: {
+    		duration: 3000,
+    		//enter: value => [ value[0], value[1], value[2], value[3] ] // fade in
+    		//onStart: start_transition
+    	}
+    }
+    /*
+    transitions: {
+    	getColor: {
+    		duration: 5000,
+    		enter: value => [ value[0], value[1], value[2], 0] // fade in
+    	}
+    }
+    */
 	});
 
 	update_layer( map_id, 'scatterplot-'+layer_id, scatterLayer );

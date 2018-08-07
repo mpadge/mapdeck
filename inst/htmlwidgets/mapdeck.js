@@ -24,7 +24,8 @@ HTMLWidgets.widget({
         	longitude: x.location[0],
         	latitude: x.location[1],
         	zoom: x.zoom,
-        	pitch: x.pitch
+        	pitch: x.pitch,
+        	bearing: 0
         };
 
         window[el.id + 'VIEW_STATE_CHANGE'] = {

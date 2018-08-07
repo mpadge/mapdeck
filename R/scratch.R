@@ -44,6 +44,8 @@
 #
 # shinyApp(ui, server)
 
+
+
 # mapdeck(
 # 		token = key
 # 		, location = c(0, 0)
@@ -56,5 +58,10 @@
 # 		, radius = 'radius'
 # 		, layer_id = 'scatter'
 # 	)
-# 	})
+
+
+
+
+
+
 
