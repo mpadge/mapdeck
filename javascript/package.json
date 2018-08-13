@@ -4,7 +4,8 @@
   "description": "R interface to deck.gl and mapbox",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify ./global/htmlwidgets.js -o ../inst/htmlwidgets/mapdeck.js"
   },
   "author": "David Cooley",
   "license": "GPL-3.0",
