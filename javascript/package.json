@@ -1,0 +1,19 @@
+{
+  "name": "mapdeck",
+  "version": "1.0.0",
+  "description": "R interface to deck.gl and mapbox",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "David Cooley",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "deck.gl": "^6.0.3",
+    "mapbox-gl": "^0.47.0"
+  },
+  "devDependencies": {
+    "browserify": "^16.2.2",
+    "rollup": "^0.64.1"
+  }
+}

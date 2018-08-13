@@ -1,3 +1,4 @@
+import HTMLWidgets from './global/htmlwidgets';
 
 HTMLWidgets.widget({
 
@@ -291,4 +292,5 @@ function decode_polyline(str, precision) {
   }
   return coordinates;
 }
+
 
