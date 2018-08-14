@@ -1,5 +1,5 @@
 import HTMLWidgets from './global/htmlwidgets';
-import { initialise_map } from './modules/utilities.js';
+//import { initialise_map } from './modules/utilities.js';
 
 // reference
 // https://www.youtube.com/watch?v=ICYLOZuFMz8

@@ -1,5 +1,5 @@
 
-export function initialise_map(el, x) {
+function initialise_map(el, x) {
 
 	// call initial layers
 	var layerCalls;
