@@ -2,9 +2,11 @@
 export function initialise_map(el, x) {
 
 	// call initial layers
+	var layerCalls;
+
   if (x.calls !== undefined) {
 
-  	console.log(x.calls);
+  	console.log( x );
 
     for (layerCalls = 0; layerCalls < x.calls.length; layerCalls++) {
 

@@ -55,18 +55,20 @@ HTMLWidgets.widget({
         };
 
         const	deckgl = new Deck({
-          	mapboxApiAccessToken: x.access_token,
-			      container: el.id,
-			      mapStyle: x.style,
-			      initialViewState: window[el.id + 'INITIAL_VIEW_STATE'],
-			      layers: [],
-			      //onLayerHover: setTooltip
+          mapboxApiAccessToken: x.access_token,
+			    container: el.id,
+			    mapStyle: x.style,
+			    initialViewState: window[el.id + 'INITIAL_VIEW_STATE'],
+			    layers: [],
+			    //onLayerHover: setTooltip
 			  });
 
+			  console.log( "deckgl" );
 			  console.log( deckgl );
+			  console.log( x );
 
-			    window[el.id + 'map'] = deckgl;
-			    initialise_map(el, x);
+			  window[el.id + 'map'] = deckgl;
+			  initialise_map(el, x);
       },
 
       resize: function(width, height) {
