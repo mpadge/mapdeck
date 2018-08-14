@@ -1,9 +1,17 @@
 import HTMLWidgets from './global/htmlwidgets';
-import { initialise_map} from './modules/utilities.js';
-
+import { initialise_map } from './modules/utilities.js';
 
 // reference
 // https://www.youtube.com/watch?v=ICYLOZuFMz8
+
+// even if i 'import' everything, if I dno't use the function, it doesn't get imported
+// because of rollup's 'tree shaking'
+
+// dependencies
+///npm install --save-dev rollup-plugin-node-resolve rollup-plugin-commonjs
+// node-resolve, for resolving node modules
+// commonjs, for using common JS as node modules
+
 
 // rollup command
 // ./node_modules/.bin/rollup -c
@@ -23,6 +31,8 @@ HTMLWidgets.widget({
 
       renderValue: function(x) {
 
+        // TODO(don't use window.params, or, check if they're already defined)
+        console.log("renderValue");
       	window.params = [];
       	window.params.push({ 'map_id' : el.id });
 
@@ -44,7 +54,7 @@ HTMLWidgets.widget({
         	pitch: x.pitch
         };
 
-        const	deckgl = new deck.DeckGL({
+        const	deckgl = new Deck({
           	mapboxApiAccessToken: x.access_token,
 			      container: el.id,
 			      mapStyle: x.style,
@@ -52,6 +62,8 @@ HTMLWidgets.widget({
 			      layers: [],
 			      //onLayerHover: setTooltip
 			  });
+
+			  console.log( deckgl );
 
 			    window[el.id + 'map'] = deckgl;
 			    initialise_map(el, x);
@@ -65,37 +77,6 @@ HTMLWidgets.widget({
     };
   }
 });
-
-function change_location( map_id, location, duration, transition, zoom ) {
-
-	window[map_id + 'map'].setProps({
-    viewState: {
-      longitude: location[0],
-      latitude: location[1],
-      zoom: zoom,
-      pitch: 0,
-      bearing: 0,
-      transitionInterpolator: transition === "fly" ? new deck.FlyToInterpolator() : new deck.LinearInterpolator(),
-      transitionDuration: duration
-    },
-  });
-}
-
-// following: https://codepen.io/vis-gl/pen/pLLQpN
-// and: https://beta.observablehq.com/@pessimistress/deck-gl-geojsonlayer-example
-function updateTooltip({x, y, object}) {
-  const tooltip = document.getElementById('tooltip');
-  if (object) {
-  	if(object.tooltip === undefined) {
-  		return;
-  	}
-    tooltip.style.top = `${y}px`;
-    tooltip.style.left = `${x}px`;
-    tooltip.innerHTML = `<div>${object.tooltip}</div>`;
-  } else {
-    tooltip.innerHTML = '';
-  }
-}
 
 if (HTMLWidgets.shinyMode) {
 

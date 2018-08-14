@@ -4,6 +4,8 @@ export function initialise_map(el, x) {
 	// call initial layers
   if (x.calls !== undefined) {
 
+  	console.log(x.calls);
+
     for (layerCalls = 0; layerCalls < x.calls.length; layerCalls++) {
 
       //push the map_id into the call.args
@@ -21,7 +23,7 @@ export function initialise_map(el, x) {
 }
 
 
-function findObjectElementByKey(array, key, value, layer_data ) {
+export function findObjectElementByKey(array, key, value, layer_data ) {
   for (var i = 0; i < array.length; i++) {
     if (array[i][key] === value) {
       return i;
@@ -31,7 +33,7 @@ function findObjectElementByKey(array, key, value, layer_data ) {
 }
 
 
-function update_layer( map_id, layer_id, layer ) {
+export function update_layer( map_id, layer_id, layer ) {
   var elem = findObjectElementByKey( window[map_id + 'map'].props.layers, 'id', layer_id);
   if ( elem != -1 ) {
   	window[ map_id + 'layers'][elem] = layer;
@@ -89,6 +91,37 @@ function to_rgba( colour_range ) {
 		arr.push( hexToRGBA( colour_range[i]) );
 	}
   return arr;
+}
+
+function change_location( map_id, location, duration, transition, zoom ) {
+
+	window[map_id + 'map'].setProps({
+    viewState: {
+      longitude: location[0],
+      latitude: location[1],
+      zoom: zoom,
+      pitch: 0,
+      bearing: 0,
+      transitionInterpolator: transition === "fly" ? new deck.FlyToInterpolator() : new deck.LinearInterpolator(),
+      transitionDuration: duration
+    },
+  });
+}
+
+// following: https://codepen.io/vis-gl/pen/pLLQpN
+// and: https://beta.observablehq.com/@pessimistress/deck-gl-geojsonlayer-example
+function updateTooltip({x, y, object}) {
+  const tooltip = document.getElementById('tooltip');
+  if (object) {
+  	if(object.tooltip === undefined) {
+  		return;
+  	}
+    tooltip.style.top = `${y}px`;
+    tooltip.style.left = `${x}px`;
+    tooltip.innerHTML = `<div>${object.tooltip}</div>`;
+  } else {
+    tooltip.innerHTML = '';
+  }
 }
 
 function layer_click( map_id, layer, info ) {
