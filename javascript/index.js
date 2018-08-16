@@ -1,6 +1,10 @@
 import HTMLWidgets from './global/htmlwidgets';
-import { initialise_map } from './modules/utils';
-import { Deck } from '@deck.gl/core';
+
+import arcVertex from './arc/arc-brushing-layer-vertex.glsl';
+//import arcFragment from './arc/arc-brushing-layer-fragment.glsl';
+
+//import { initialise_map } from './modules/utils';
+//import { Deck } from '@deck.gl/core';
 
 //import { initialise_map } from './modules/utilities.js';
 
@@ -21,6 +25,7 @@ import { Deck } from '@deck.gl/core';
 
 // rollup command
 // ./node_modules/.bin/rollup -c
+
 
 HTMLWidgets.widget({
 

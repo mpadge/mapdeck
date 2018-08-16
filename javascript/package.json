@@ -10,8 +10,6 @@
   "author": "David Cooley",
   "license": "GPL-3.0",
   "dependencies": {
-    "@deck.gl/core": "^6.0.3",
-    "@deck.gl/layers": "^6.0.3",
     "npm": "^6.3.0"
   },
   "devDependencies": {
