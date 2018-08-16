@@ -1,6 +1,6 @@
 import HTMLWidgets from './global/htmlwidgets';
 
-import arcVertex from './arc/arc-brushing-layer-vertex.glsl';
+//import arcVertex from './arc/arc-brushing-layer-vertex.glsl';
 //import arcFragment from './arc/arc-brushing-layer-fragment.glsl';
 
 //import { initialise_map } from './modules/utils';
@@ -41,6 +41,20 @@ HTMLWidgets.widget({
 
       	//window.params = [];
       	//window.params.push({ 'map_id' : el.id });
+
+
+      	var fragmentShader =  `\
+#define SHADER_NAME arc-layer-fragment-shader
+precision highp float;
+varying vec4 vColor;
+void main(void) {
+  gl_FragColor = vColor;
+  gl_FragColor = picking_filterPickingColor(gl_FragColor);
+}
+`;
+
+        console.log(fragmentShader);
+
 
       	window[el.id + 'layers'] = []; // keep track of layers for overlaying multiple
       	// needs to be an array because .props takes an array of layers
