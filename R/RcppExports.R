@@ -69,6 +69,10 @@ rcpp_polygon_geojson <- function(data, data_types, params, geometry_columns) {
     .Call(`_mapdeck_rcpp_polygon_geojson`, data, data_types, params, geometry_columns)
 }
 
+rcpp_polygon_quadmesh <- function(data, data_types, params, geometry_columns) {
+    .Call(`_mapdeck_rcpp_polygon_quadmesh`, data, data_types, params, geometry_columns)
+}
+
 rcpp_polygon_polyline <- function(data, data_types, params, geometry_columns) {
     .Call(`_mapdeck_rcpp_polygon_polyline`, data, data_types, params, geometry_columns)
 }

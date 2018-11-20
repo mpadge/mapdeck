@@ -15,6 +15,7 @@ namespace polygon {
 		"fill_colour", "stroke_colour"
 	);
 
+
 } // namespace polygon
 } // namespace mapdeck
 

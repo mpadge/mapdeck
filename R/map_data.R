@@ -199,6 +199,14 @@ resolve_data.data.frame <- function( data, l, sf_geom ) {
 	return( l )
 }
 
+resolve_data.mesh3d <- function( data, l, sf_geom ) {
+	l[["data_type"]] <- "mesh3d"
+	# df <- t( data[["vb"]] )
+	# l[["data"]] <- df
+	l[["data"]] <- as.data.frame( t( data[["vb"]] ) )
+	return( l )
+}
+
 resolve_data.default <- function( data ) stop("This type of data is not supported")
 
 

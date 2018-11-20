@@ -160,6 +160,12 @@ add_polygon <- function(
 		geometry_column <- "polyline"
 		shape <- rcpp_polygon_polyline( data, data_types, l, geometry_column )
 		jsfunc <- "add_polygon_polyline"
+	} else if ( tp == "mesh3d" ) {
+		geometry_column <- list( geometry = c("x","y","z"))
+		print( head( data ) )
+		shape <- rcpp_polygon_quadmesh( data, data_types, l, geometry_column )
+		shape[["legend"]] <- list()
+		#print( shape )
 	}
 
 	light_settings <- jsonlite::toJSON(light_settings, auto_unbox = T)
